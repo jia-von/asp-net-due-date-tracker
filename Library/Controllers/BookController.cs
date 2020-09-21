@@ -11,7 +11,7 @@ namespace Library.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Create");
         }
 
         /*
@@ -21,18 +21,37 @@ namespace Library.Controllers
             If the ID is already in the list, throw an exception.
             Success message: "You have successfully checked out {title} until {DueDate}."
             Error Message: “Unable to check out book: {Exception.Message}.”
+        // public Book(int id, string title, string author, DateTime publicationDate, DateTime checkedOutDate)
 
          */
-        public IActionResult Create()
+        public IActionResult Create(string id, string title, string author, string publicationDate, string checkedOutDate)
         {
-
+            if (Request.Query.Count > 0)
+            {
+                    if (id != null && title != null && author != null && publicationDate != null && checkedOutDate != null)
+                    {
+                    CreateBook(id, title, author, publicationDate, checkedOutDate);
+                    ViewBag.Success = $"You have successfully checked out {title} until {1}";
+                    }
+                    else
+                    {
+                        ViewBag.Error = "Not all fields have had values provided.";
+                        ViewBag.ID = id;
+                        ViewBag.Title = title;
+                        ViewBag.Author = author;
+                        ViewBag.PublicationDate = publicationDate;
+                        ViewBag.CheckedOutDate = checkedOutDate;
+                    }
+            }
+            return View();
         }
 
         // Action/View “List”
         // Render a list of all books as links that will load the “Details” Action/View.
         public IActionResult List()
         {
-
+            ViewBag.BookLists = Books;
+            return View();
         }
 
         /*
@@ -47,7 +66,7 @@ namespace Library.Controllers
 
         public IActionResult Details()
         {
-
+            return View();
         }
 
         /*
@@ -58,9 +77,13 @@ namespace Library.Controllers
             Throw an exception if the ID already exists.
          */
 
-        public void CreateBook()
+        public void CreateBook(string id, string title, string author, string publicationDate, string checkedOutDate)
         {
-
+            if(Books.Any(x => x.ID == int.Parse(id)))
+            {
+                throw new Exception($"Unable to check out book: {Books.Where(x => x.ID == int.Parse(id)).SingleOrDefault().Title}" );
+            }
+            Books.Add(new Book(int.Parse(id), title, author, DateTime.Parse(publicationDate), DateTime.Parse(checkedOutDate)));
         }
 
         // Method “GetBookByID()”.
@@ -85,6 +108,6 @@ namespace Library.Controllers
 
         // A public static “Books” property which is a list of “Book” objects.
         // This will be replaced by a proper database on {Day 2 assignment title}.
-        public static List<Book> Books {get; set;}
+        public static List<Book> Books { get; set; } = new List<Book>();
     }
 }

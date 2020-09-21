@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["PageTitle"] = "Create";
+}
+
+<h1>Create</h1>
+
+@{
+    if (ViewBag.Success != null)
+    {
+        <p class="alert-success">Success! @(ViewBag.Success)</p>
+    }
+    else if (ViewBag.Error != null)
+    {
+        <p class="alert-danger">Error! @(ViewBag.Error)</p>
+        }
+    }
+
+<form action="/Book/Create" method="get">
+    <div>
+        <label for="id">ID</label>
+        <input type="text" id="id" name="id" value="@(ViewBag.ID)" />
+    </div>
+    <div>
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" value="@(ViewBag.Title)" />
+    </div>
+    <div>
+        <label for="author">Author</label>
+        <input type="text" id="author" name="author" value="@(ViewBag.Author)" />
+    </div>
+    <div>
+        <label for="publicationDate">Publication Date</label>
+        <input type="date" id="publicationDate" name="publicationDate" value="@(ViewBag.PublicationDate)" />
+    </div>
+    <div>
+        <label for="checkedOutDate">Checked Out Date</label>
+        <input type="date" id="checkedOutDate" name="checkedOutDate" value="@(ViewBag.CheckedOutDate)" />
+    </div>
+    <button type="submit">Go!</button>
+</form>
