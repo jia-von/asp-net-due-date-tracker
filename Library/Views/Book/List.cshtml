@@ -1,7 +1,25 @@
 ﻿
 @{
     ViewData["Title"] = "List";
+    // ViewBag.BookLists = Books;
 }
 
-<h1>List</h1>
 
+<h1>Book List</h1>
+<ul>
+    @foreach (Book book in ViewBag.BookLists)
+    {
+    <li>
+        <h2>@(book.Title)</h2>
+        <p>@(book.ID)</p>
+        <p>@(book.Author)</p>
+        <p>@(book.PublicationDate)</p>
+        <p>@(book.CheckedOutDate)</p>
+        <p>@(book.DueDate)</p>
+        <p>@(book.ReturnedDate)</p>
+    </li>
+
+
+
+    }
+</ul>
