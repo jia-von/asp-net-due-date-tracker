@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Library.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Library.Controllers
+{
+    public class BookController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        /*
+         Action/View “Create”
+            Will display the form to create an object. 
+            If the appropriate parameters are supplied in the query, attempt creation of the “Book” and add it to the list.
+            If the ID is already in the list, throw an exception.
+            Success message: "You have successfully checked out {title} until {DueDate}."
+            Error Message: “Unable to check out book: {Exception.Message}.”
+
+         */
+        public IActionResult Create()
+        {
+
+        }
+
+        // Action/View “List”
+        // Render a list of all books as links that will load the “Details” Action/View.
+        public IActionResult List()
+        {
+
+        }
+
+        /*
+         Action/View “Details”
+            If no get parameter “id” was supplied, render “No book selected.”
+            If an “id” get parameter was supplied, use GetBookByID() and render:
+            "You checked out {title} on {CheckedOutDate}, and it {is/was} due on {DueDate}."
+            Use conditional rendering to make a choice about using ‘is’ or ‘was’ based on today’s date.
+            A button that will call ExtendDueDateForBookByID().
+            A button that will call DeleteBookByID().
+         */
+
+        public IActionResult Details()
+        {
+
+        }
+
+        /*
+         Method “CreateBook()”.
+            Accepts the same parameters as the “Book” constructor.
+            Creates and adds a “Book” to the “Books” list.
+            Ensures the provided ID is unique in the list.
+            Throw an exception if the ID already exists.
+         */
+
+        public void CreateBook()
+        {
+
+        }
+
+        // Method “GetBookByID()”.
+        // Returns the book with the given ID from the “Books” list.
+        public void GetBookByID()
+        {
+
+        }
+
+        // Extensions are 7 days from the current date (7 days from when the user requests the extension, not 7 days past the “DueDate”).
+        public void ExtendDueDateForBookByID()
+        {
+
+        }
+
+
+        // Removes the book with the given ID from the “Books” list.
+        public void DeleteBookByID()
+        {
+
+        }
+
+        // A public static “Books” property which is a list of “Book” objects.
+        // This will be replaced by a proper database on {Day 2 assignment title}.
+        public static List<Book> Books {get; set;}
+    }
+}

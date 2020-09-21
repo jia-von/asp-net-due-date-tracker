@@ -37,18 +37,11 @@ namespace Library.Models
 
         /*
          int “ID”
-            This property should be readOnly (getter only, backing variable initialized via constructor)
             This property will be auto-incremented by the database in tomorrow’s practice
             User will have to add “ID” on Day 1 and the code will have to validate that the “ID” is unique (in the CreateBook() method)
          */
-        private int _id;
+        private int _id; // This property should be readOnly (getter only, backing variable initialized via constructor)
         public int ID { get => _id; }
-
-        /*
-         Constructor accepting the ID, Title, Author, PublicationDate and CheckedOutDate as parameters
-            “DueDate” will be set to 14 days after “CheckedOutDate”
-            “ReturnedDate” will be set to null   
-         */
 
         public Book()
         {
@@ -57,8 +50,20 @@ namespace Library.Models
             _author = "Default Author";
             _publicationDate = DateTime.Now;
             CheckedOutDate = DateTime.Now;
-            DueDate = CheckedOutDate.AddDays(14);
-            ReturnedDate = null;
+            DueDate = CheckedOutDate.AddDays(14); // “DueDate” will be set to 14 days after “CheckedOutDate”
+            ReturnedDate = null; // “ReturnedDate” will be set to null  
+        }
+
+        // Constructor accepting the ID, Title, Author, PublicationDate and CheckedOutDate as parameters
+        public Book(int id, string title, string author, DateTime publicationDate, DateTime checkedOutDate)
+        {
+            _id = id;
+            _title = title;
+            _author = author;
+            _publicationDate = publicationDate;
+            CheckedOutDate = checkedOutDate;
+            DueDate = CheckedOutDate.AddDays(14); // “DueDate” will be set to 14 days after “CheckedOutDate”
+            ReturnedDate = null; // “ReturnedDate” will be set to null  
         }
 
     }
