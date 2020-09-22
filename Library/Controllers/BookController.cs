@@ -55,7 +55,7 @@ namespace Library.Controllers
         }
 
         /*
-         Action/View “Details”
+         
             If no get parameter “id” was supplied, render “No book selected.”
             If an “id” get parameter was supplied, use GetBookByID() and render:
             "You checked out {title} on {CheckedOutDate}, and it {is/was} due on {DueDate}."
@@ -64,6 +64,7 @@ namespace Library.Controllers
             A button that will call DeleteBookByID().
          */
 
+        // Action/View “Details”
         public IActionResult Details(string id, string extend, string delete)
         {
             int _id = int.Parse(id);
@@ -88,20 +89,17 @@ namespace Library.Controllers
             return result;
         }
 
-        /*
-         Method “CreateBook()”.
-            Accepts the same parameters as the “Book” constructor.
-            Creates and adds a “Book” to the “Books” list.
-            Ensures the provided ID is unique in the list.
-            Throw an exception if the ID already exists.
-         */
-
+        // Method “CreateBook()”.
+        // Accepts the same parameters as the “Book” constructor.
         public void CreateBook(string id, string title, string author, string publicationDate, string checkedOutDate)
         {
-            if(Books.Any(x => x.ID == int.Parse(id)))
+            // Ensures the provided ID is unique in the list.
+            if (Books.Any(x => x.ID == int.Parse(id)))
             {
-                throw new Exception($"Unable to check out book: {Books.Where(x => x.ID == int.Parse(id)).SingleOrDefault().Title}" );
+                // Throw an exception if the ID already exists.
+                throw new Exception("Unique ID already exists." );
             }
+            // Creates and adds a “Book” to the “Books” list.
             Books.Add(new Book(int.Parse(id), title, author, DateTime.Parse(publicationDate), DateTime.Parse(checkedOutDate)));
         }
 
