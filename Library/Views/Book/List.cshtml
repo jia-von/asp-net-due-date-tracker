@@ -1,16 +1,34 @@
 ﻿
 @{
     ViewData["Title"] = "List";
-    // ViewBag.BookLists = Books;
 }
 
+<h1>List</h1>
 
-<h1>Book List</h1>
-<ul>
-    @foreach (Book book in ViewBag.BookLists)
-    {
-    <li>
-        <a href="/Book/Details?id=@(book.ID)"><p>@(book.Title)</p></a>
-    </li>
-    }
-</ul>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publication Date</th>
+            <th>Checked Out Date</th>
+            <th>Due Date</th>
+            <th>Returned Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Book book in ViewBag.Books)
+        {
+            <tr>
+                <td><a href="/Book/Details?id=@(book.ID)">@(book.ID)</a></td>
+                <td>@(book.Title)</td>
+                <td>@(book.Author)</td>
+                <td>@(book.PublicationDate.ToLongDateString())</td>
+                <td>@(book.CheckedOutDate.ToLongDateString())</td>
+                <td>@(book.DueDate.ToLongDateString())</td>
+                <td>@(book.ReturnedDate==null?"Not Returned":((DateTime)book.ReturnedDate).ToLongDateString())</td>
+            </tr>
+        }
+    </tbody>
+</table>
