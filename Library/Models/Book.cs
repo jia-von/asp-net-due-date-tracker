@@ -11,12 +11,12 @@ namespace Library.Models
         // string “Title”
         // This property should be readOnly (getter only, backing variable initialized via constructor)
         private string _title;
-        public string Title { get => _title; }
+        public string Title  => _title;
 
         // DateTime “PublicationDate”
         // This property should be readOnly(getter only, backing variable initialized via constructor)
         private DateTime _publicationDate;
-        public DateTime PublicationDate { get => _publicationDate; }
+        public DateTime PublicationDate => _publicationDate;
 
         // DateTime “CheckedOutDate”
         public DateTime CheckedOutDate { get; set; }
@@ -33,7 +33,7 @@ namespace Library.Models
         // string “Author”
         // This property should be readOnly(getter only, backing variable initialized via constructor)
         private string _author;
-        public string Author { get => _author; }
+        public string Author  => _author;
 
         /*
          int “ID”
@@ -43,25 +43,14 @@ namespace Library.Models
         private int _id; // This property should be readOnly (getter only, backing variable initialized via constructor)
         public int ID { get => _id; }
 
-        public Book()
-        {
-            _id = 0;
-            _title = "Default Title";
-            _author = "Default Author";
-            _publicationDate = DateTime.Now;
-            CheckedOutDate = DateTime.Now;
-            DueDate = CheckedOutDate.AddDays(14); // “DueDate” will be set to 14 days after “CheckedOutDate”
-            ReturnedDate = null; // “ReturnedDate” will be set to null  
-        }
-
         // Constructor accepting the ID, Title, Author, PublicationDate and CheckedOutDate as parameters
         public Book(int id, string title, string author, DateTime publicationDate, DateTime checkedOutDate)
         {
             _id = id;
             _title = title;
             _author = author;
-            _publicationDate = publicationDate.Date;
-            CheckedOutDate = checkedOutDate.Date;
+            _publicationDate = publicationDate;
+            CheckedOutDate = checkedOutDate;
             DueDate = CheckedOutDate.AddDays(14); // “DueDate” will be set to 14 days after “CheckedOutDate”
             ReturnedDate = null; // “ReturnedDate” will be set to null  
         }
