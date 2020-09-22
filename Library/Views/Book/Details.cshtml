@@ -1,7 +1,15 @@
 ﻿
 @{
-    ViewData["Title"] = "Details";
+    ViewData["PageTitle"] = "Details";
+    Book book = ViewBag.BookDetail;
 }
 
-<h1>Details</h1>
+<h1>Book Details</h1>
 
+    <h2>@(book.Title)</h2>
+    <li>@(book.Author)</li>
+    <li>@(book.PublicationDate)</li>
+    <p> You checked out @(book.Title) on @(book.CheckedOutDate), and it is due on @(book.DueDate)</p>
+
+    <button><a href="Details?id=@(book.ID)&extend=true">Extend Date</a></button>
+    <button><a href="Details?id=@(book.ID)&delete=true">Delete Bok</a></button>

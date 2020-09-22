@@ -10,16 +10,7 @@
     @foreach (Book book in ViewBag.BookLists)
     {
     <li>
-        <h2>@(book.Title)</h2>
-        <p>@(book.ID)</p>
-        <p>@(book.Author)</p>
-        <p>@(book.PublicationDate)</p>
-        <p>@(book.CheckedOutDate)</p>
-        <p>@(book.DueDate)</p>
-        <p>@(book.ReturnedDate)</p>
+        <a href="/Book/Details?id=@(book.ID)"><p>@(book.Title)</p></a>
     </li>
-
-
-
     }
 </ul>

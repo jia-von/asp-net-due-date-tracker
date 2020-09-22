@@ -64,9 +64,28 @@ namespace Library.Controllers
             A button that will call DeleteBookByID().
          */
 
-        public IActionResult Details()
+        public IActionResult Details(string id, string extend, string delete)
         {
-            return View();
+            int _id = int.Parse(id);
+            IActionResult result;
+
+            if(extend != null)
+            {
+                ExtendDueDateForBookByID(_id);
+                result = RedirectToAction("List");
+            }
+            else if (delete != null)
+            {
+                DeleteBookByID(_id);
+                result = RedirectToAction("List");
+            }
+            else
+            {
+                ViewBag.BookDetail = GetBookByID(_id);
+                result = View();
+            }
+
+            return result;
         }
 
         /*
@@ -88,22 +107,22 @@ namespace Library.Controllers
 
         // Method “GetBookByID()”.
         // Returns the book with the given ID from the “Books” list.
-        public void GetBookByID()
+        public Book GetBookByID(int id)
         {
-
+            return Books.Where(x => x.ID == id).SingleOrDefault();
         }
 
         // Extensions are 7 days from the current date (7 days from when the user requests the extension, not 7 days past the “DueDate”).
-        public void ExtendDueDateForBookByID()
+        public void ExtendDueDateForBookByID(int id)
         {
-
+            Books.Where(x => x.ID == id).SingleOrDefault().DueDate = DateTime.Now.AddDays(7);
         }
 
 
         // Removes the book with the given ID from the “Books” list.
-        public void DeleteBookByID()
+        public void DeleteBookByID(int id)
         {
-
+            Books.RemoveAll(x => x.ID == id);
         }
 
         // A public static “Books” property which is a list of “Book” objects.
