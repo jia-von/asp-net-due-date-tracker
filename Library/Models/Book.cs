@@ -60,8 +60,8 @@ namespace Library.Models
             _id = id;
             _title = title;
             _author = author;
-            _publicationDate = publicationDate;
-            CheckedOutDate = checkedOutDate;
+            _publicationDate = publicationDate.Date;
+            CheckedOutDate = checkedOutDate.Date;
             DueDate = CheckedOutDate.AddDays(14); // “DueDate” will be set to 14 days after “CheckedOutDate”
             ReturnedDate = null; // “ReturnedDate” will be set to null  
         }

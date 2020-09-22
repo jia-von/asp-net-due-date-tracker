@@ -31,7 +31,7 @@ namespace Library.Controllers
                     if (id != null && title != null && author != null && publicationDate != null && checkedOutDate != null)
                     {
                     CreateBook(id, title, author, publicationDate, checkedOutDate);
-                    ViewBag.Success = $"You have successfully checked out {title} until {1}";
+                    ViewBag.Success = $"You have successfully checked out {title} until {Books.Where(x => x.ID == int.Parse(id)).Single().DueDate.ToString("d")}";
                     }
                     else
                     {
