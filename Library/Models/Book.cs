@@ -1,58 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Library.Models
 {
-    // Book class (Model):
-    public class Book
+    // Book class (Model) modified to serve as a database code-first class:
+    [Table("Book")]
+    public partial class Book
     {
-        // string “Title”
-        // This property should be readOnly (getter only, backing variable initialized via constructor)
-        private string _title;
-        public string Title  => _title;
+        [Key]
+        // int “ID” - int(10) (primary key)
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id", TypeName = "int(10)")]
+        public int ID { get; set; }
 
-        // DateTime “PublicationDate”
-        // This property should be readOnly(getter only, backing variable initialized via constructor)
-        private DateTime _publicationDate;
-        public DateTime PublicationDate => _publicationDate;
+        // string “Title” - varchar(30)
+        [Column("title", TypeName = "varchar(30)")]
+        [Required]
+        public string Title { get; set; }
 
-        // DateTime “CheckedOutDate”
+        // DateTime “PublicationDate” - date
+        [Column("publication_date", TypeName = "date")]
+        [Required]
+        public DateTime PublicationDate { get; set; }
+        // DateTime “CheckedOutDate” - date
+        [Column("checked_out_date", TypeName = "date")]
+        [Required]
         public DateTime CheckedOutDate { get; set; }
 
-        // DateTime “DueDate”
-        // This will equal “CheckedOutDate” + 14 days (set in constructor)
-        // This will update with each extension(via the ExtendDueDateForBookByID() method)
+        // DateTime “DueDate” - date
+        [Column("due_date", TypeName = "date")]
+        [Required]
         public DateTime DueDate { get; set; }
 
-        // DateTime “ReturnedDate”
-        // Default value should be null (set in constructor)
+        // DateTime “ReturnedDate” - date (nullable)
+        [Column("returned_date", TypeName = "date")]
         public DateTime? ReturnedDate { get; set; }
 
-        // string “Author”
-        // This property should be readOnly(getter only, backing variable initialized via constructor)
-        private string _author;
-        public string Author  => _author;
+        // int “AuthorID” - int(10) (foreign key)
+        [Column("author_id", TypeName = "int(10)")]
+        public string AuthorID { get; set; }
 
-        /*
-         int “ID”
-            This property will be auto-incremented by the database in tomorrow’s practice
-            User will have to add “ID” on Day 1 and the code will have to validate that the “ID” is unique (in the CreateBook() method)
-         */
-        private int _id; // This property should be readOnly (getter only, backing variable initialized via constructor)
-        public int ID { get => _id; }
+        // Points to the property representing the foreign key column.
+        [ForeignKey(nameof(AuthorID))]
 
-        // Constructor accepting the ID, Title, Author, PublicationDate and CheckedOutDate as parameters
-        public Book(int id, string title, string author, DateTime publicationDate, DateTime checkedOutDate)
+        // By using nameof() it saves us from breaking it accidentally by renaming things, as long as we use Ctrl+R+R to rename them. For some reason the migration from an existing database doesn't use this, which is why things breaks
+        [InverseProperty(nameof(Author.Books))]
+        public virtual Author Authors { get; set; }
+
+
+
+        public Book(int id, string title, DateTime publicationDate, DateTime checkedOutDate) //string author was removed from parameters
         {
-            _id = id;
-            _title = title;
-            _author = author;
-            _publicationDate = publicationDate;
+            ID = id;
+            Title = title;
+            // Author = author;
+            PublicationDate = publicationDate;
             CheckedOutDate = checkedOutDate;
-            DueDate = CheckedOutDate.AddDays(14); // “DueDate” will be set to 14 days after “CheckedOutDate”
-            ReturnedDate = null; // “ReturnedDate” will be set to null  
+            DueDate = CheckedOutDate.AddDays(14); 
+            ReturnedDate = null; 
         }
 
     }
