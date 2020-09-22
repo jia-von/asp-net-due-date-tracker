@@ -42,7 +42,7 @@ namespace Library.Models
 
         // int “AuthorID” - int(10) (foreign key)
         [Column("author_id", TypeName = "int(10)")]
-        public string AuthorID { get; set; }
+        public int AuthorID { get; set; }
 
         // Points to the property representing the foreign key column.
         [ForeignKey(nameof(AuthorID))]
@@ -51,7 +51,16 @@ namespace Library.Models
         [InverseProperty(nameof(Author.Books))]
         public virtual Author Authors { get; set; }
 
-
+        public Book() //string author was removed from parameters
+        {
+            ID = 0;
+            Title = "Default Title";
+            AuthorID = 0;
+            PublicationDate = DateTime.Now;
+            CheckedOutDate = DateTime.Now;
+            DueDate = CheckedOutDate.AddDays(14);
+            ReturnedDate = null;
+        }
 
         public Book(int id, string title, DateTime publicationDate, DateTime checkedOutDate) //string author was removed from parameters
         {
@@ -60,8 +69,8 @@ namespace Library.Models
             // Author = author;
             PublicationDate = publicationDate;
             CheckedOutDate = checkedOutDate;
-            DueDate = CheckedOutDate.AddDays(14); 
-            ReturnedDate = null; 
+            DueDate = CheckedOutDate.AddDays(14);
+            ReturnedDate = null;
         }
 
     }
