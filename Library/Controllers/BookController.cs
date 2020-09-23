@@ -17,7 +17,7 @@ namespace Library.Controllers
         {
             return RedirectToAction("List");
         }
-        public IActionResult Create(string id, string title, string author, string publicationDate, string checkedOutDate)
+        public IActionResult Create(string title, string author, string publicationDate, string checkedOutDate)
         {
             if (Request.Query.Count > 0)
             {
@@ -26,7 +26,7 @@ namespace Library.Controllers
                     if (title != null && author != null && publicationDate != null && checkedOutDate != null)
                     {
                         // Get parameters come in as a string, so we have to convert those to the data types required.
-                        Book createdBook = CreateBook(title, DateTime.Parse(publicationDate), DateTime.Parse(checkedOutDate));
+                        Book createdBook = CreateBook(title, author, DateTime.Parse(publicationDate), DateTime.Parse(checkedOutDate));
 
                         ViewBag.Success = $"You have successfully checked out {createdBook.Title} until {createdBook.DueDate}.";
                     }
@@ -41,7 +41,6 @@ namespace Library.Controllers
                     ViewBag.Error = $"Unable to check out book: {e.Message}";
 
                     // Store our data to re-add to the form.
-                    ViewBag.ID = id;
                     ViewBag.BookTitle = title;
                     ViewBag.Author = author;
                     ViewBag.PublicationDate = publicationDate;
@@ -87,15 +86,17 @@ namespace Library.Controllers
                 Have “CreateBook()” perform the nulling of “ReturnDate”.
                 Have “CreateBook()” perform the setting of “DueDate”.
          */
-        public Book CreateBook(string title, DateTime publicationDate, DateTime checkedOutDate)
+        public Book CreateBook(string title, string author, DateTime publicationDate, DateTime checkedOutDate)
         {
-            using(LibraryContext context = new LibraryContext())
+            Book newBook = new Book() { Title = title, PublicationDate = publicationDate, CheckedOutDate = checkedOutDate };
+
+            using (LibraryContext context = new LibraryContext())
             {
-                Book newBook = new Book() {Title = title, PublicationDate = publicationDate, CheckedOutDate = checkedOutDate };
+                newBook.AuthorID = context.Authors.Where(x => x.Name == author).Single().ID;
                 context.Books.Add(newBook);
-                return newBook;
+                context.SaveChanges();
             }
-            
+            return newBook;
         }
         // Modify “GetBookByID()” to get a specific book from the database.
         // Ensure that the “Author” virtual property is populated before the object is returned (for use on the Details view). --TODO
