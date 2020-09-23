@@ -62,11 +62,11 @@ namespace Library.Models
             ReturnedDate = null;
         }
 
-        public Book(int id, string title, DateTime publicationDate, DateTime checkedOutDate) //string author was removed from parameters
+        public Book(int id, string title, int author, DateTime publicationDate, DateTime checkedOutDate) //string author was removed from parameters
         {
             ID = id;
             Title = title;
-            // Author = author;
+            AuthorID = author;
             PublicationDate = publicationDate;
             CheckedOutDate = checkedOutDate;
             DueDate = CheckedOutDate.AddDays(14);

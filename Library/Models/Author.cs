@@ -11,6 +11,10 @@ namespace Library.Models
     [Table("Author")]
     public partial class Author
     {
+        public Author()
+        {
+            Books = new HashSet<Book>();
+        }
         // int “ID” - int(10) (prmary key)
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

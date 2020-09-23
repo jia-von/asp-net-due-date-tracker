@@ -1,7 +1,8 @@
 ﻿
-@*@{
+@{
     ViewData["Title"] = "List";
 }
+
 
 <h1>List</h1>
 
@@ -18,17 +19,19 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Book book in ViewBag.Books)
-        {
-            <tr>
-                <td><a href="/Book/Details?id=@(book.ID)">@(book.ID)</a></td>
-                <td>@(book.Title)</td>
-                <td>@(book.Author)</td>
-                <td>@(book.PublicationDate.ToLongDateString())</td>
-                <td>@(book.CheckedOutDate.ToLongDateString())</td>
-                <td>@(book.DueDate.ToLongDateString())</td>
-                <td>@(book.ReturnedDate==null?"Not Returned":((DateTime)book.ReturnedDate).ToLongDateString())</td>
-            </tr>
-        }
+
+            @foreach (Book book in ViewBag.BookList)
+            {
+                <tr>
+                    <td><a href="/Book/Details?id=@(book.ID)">@(book.ID)</a></td>
+                    <td>@(book.Title)</td>
+                    <td>@(book.Authors.Name)</td>
+                    <td>@(book.PublicationDate.ToLongDateString())</td>
+                    <td>@(book.CheckedOutDate.ToLongDateString())</td>
+                    <td>@(book.DueDate.ToLongDateString())</td>
+                    <td>@(book.ReturnedDate == null ? "Not Returned" : ((DateTime)book.ReturnedDate).ToLongDateString())</td>
+                </tr>
+            }
+
     </tbody>
-</table>*@
+</table>
