@@ -29,6 +29,7 @@ namespace Library.Controllers
                         Book createdBook = CreateBook(title, author, DateTime.Parse(publicationDate), DateTime.Parse(checkedOutDate));
 
                         ViewBag.Success = $"You have successfully checked out {createdBook.Title} until {createdBook.DueDate}.";
+
                     }
                     else
                     {
