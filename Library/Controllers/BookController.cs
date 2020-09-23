@@ -108,24 +108,40 @@ namespace Library.Controllers
          
          */
         public Book CreateBook(string title, int authorID, DateTime publicationDate, DateTime checkedOutDate)
-        {
-            Book newBook = new Book()
+        {    
+            if(GetBooks().Any(x => x.Title.ToLower() == title.Trim().ToLower()))
             {
-                Title = title,
-                AuthorID = authorID,
-                PublicationDate = publicationDate,
-                CheckedOutDate = checkedOutDate,
-                DueDate = checkedOutDate.AddDays(14),
-                ReturnedDate = null
-            };
-
-            using (LibraryContext context = new LibraryContext())
-            {
-                context.Books.Add(newBook);
-                context.SaveChanges();
+                // If “Title” is not unique do not add the new book.
+                // Ensure this comparison is case insensitive and trimmed.
+                return GetBooks().Where(x => x.Title.ToLower() == title.Trim().ToLower()).Single();
             }
+            else
+            {
+                Book newBook = new Book()
+                {
+                    Title = title,
+                    AuthorID = authorID,
+                    PublicationDate = publicationDate,
 
-            return newBook;
+                    // Set “CheckedOutDate” to today’s date.
+                    CheckedOutDate = DateTime.Now,
+
+                    // Keep the logic to set DueDate and ReturnedDate.
+                    DueDate = checkedOutDate.AddDays(14),
+                    ReturnedDate = null,
+
+                    // Set “ExtensionCount” to 0.
+                    ExtensionCount = 0
+                };
+
+                using (LibraryContext context = new LibraryContext())
+                {
+                    context.Books.Add(newBook);
+                    context.SaveChanges();
+                }
+
+                return newBook;
+            }
         }
         public Book GetBookByID(int id)
         {
