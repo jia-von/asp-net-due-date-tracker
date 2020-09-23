@@ -134,11 +134,8 @@ namespace Library.Controllers
 
             using (LibraryContext context = new LibraryContext())
             {
-                Book book;
-
-                    bookList = context.Books.
-                    book.Authors = context.Authors.Where(x => x.ID == book.AuthorID).Single();
-
+                bookList = context.Books.ToList();
+                bookList.ForEach(x => x.Authors = context.Authors.Where(y => y.ID == x.AuthorID).Single());
             }
             return bookList;
         }
