@@ -60,8 +60,7 @@ namespace Library.Controllers
         public IActionResult Details(string id, string delete, string extend)
         {
             IActionResult result;
-            using(LibraryContext contxt = new LibraryContext())
-            {
+
                     if (delete != null)
                     {
                         DeleteBookByID(int.Parse(id));
@@ -77,9 +76,7 @@ namespace Library.Controllers
                         result = View();
                     }
 
-                return result;
-            }
-
+            return result;
         }
         /*
          Modify “CreateBook()” to save books to a database using Entity Framework.
@@ -114,7 +111,12 @@ namespace Library.Controllers
         // Modify “ExtendDueDateForBookByID()” to update a book in the database using Entity Framework.
         public void ExtendDueDateForBookByID(int id)
         {
-            GetBookByID(id).DueDate = DateTime.Now.Date.AddDays(7);
+            using(LibraryContext context = new LibraryContext())
+            {
+                GetBookByID(id).DueDate = DateTime.Now.Date.AddDays(7);
+                context.SaveChanges();
+            }
+
         }
         // Modify “DeleteBookByID()” to delete a book from the database using Entity Framework.
         // Removes the book with the given ID from the “Books” list.
@@ -124,6 +126,7 @@ namespace Library.Controllers
             using (LibraryContext context = new LibraryContext())
             {
                 context.Books.Remove(context.Books.Where(x => x.ID == id).Single());
+                context.SaveChanges();
             }
         }
 
