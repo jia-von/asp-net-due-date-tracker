@@ -85,7 +85,7 @@ namespace Library.Controllers
          */
         public Book CreateBook(string title, string author, DateTime publicationDate, DateTime checkedOutDate)
         {
-            Book newBook = new Book() { Title = title, PublicationDate = publicationDate, CheckedOutDate = checkedOutDate };
+            Book newBook = new Book(title, publicationDate, checkedOutDate);
 
             using (LibraryContext context = new LibraryContext())
             {
@@ -113,7 +113,7 @@ namespace Library.Controllers
         {
             using(LibraryContext context = new LibraryContext())
             {
-                GetBookByID(id).DueDate = DateTime.Now.Date.AddDays(7);
+                context.Books.Where(x => x.ID == id).Single().DueDate = DateTime.Now.AddDays(7);
                 context.SaveChanges();
             }
 
