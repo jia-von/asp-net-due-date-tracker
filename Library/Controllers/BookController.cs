@@ -9,24 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Library.Controllers
 {
-    // BookController (Controller) class modified:
+    // Modify “BookController” (Controller):
     public class BookController : Controller
     {
-        /*
-          BookController (Controller) class modified:
-                Remove the “Books” property (static list of Books).
-                Modify “ExtendDueDateForBookByID()” to update a book in the database using Entity Framework.
-                Modify “DeleteBookByID()” to delete a book from the database using Entity Framework.
-                Add a “GetBooks()” method to get a list of all books in the database using Entity Framework.
-                Ensure that the “Author” virtual property is populated before the list is returned (for use on the List view).
-                Modify “GetBookByID()” to get a specific book from the database.
-                Ensure that the “Author” virtual property is populated before the object is returned (for use on the Details view).
-                Modify “CreateBook()” to save books to a database using Entity Framework.
-                    Have “CreateBook()” perform the nulling of “ReturnDate”.
-                    Have “CreateBook()” perform the setting of “DueDate”.
-
-        */
-
         public IActionResult Index()
         {
             return RedirectToAction("List");
@@ -114,6 +99,14 @@ namespace Library.Controllers
             }
             return result;
         }
+
+        /*
+         Modify “CreateBook()”.
+                Check that “Title” is unique before saving books to the database.
+                If “Title” is not unique do not add the new book.
+                Ensure this comparison is case insensitive and trimmed.
+         
+         */
         public Book CreateBook(string title, int authorID, DateTime publicationDate, DateTime checkedOutDate)
         {
             Book newBook = new Book()
