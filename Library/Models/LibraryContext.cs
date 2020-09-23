@@ -108,7 +108,8 @@ namespace Library.Models
                         CheckedOutDate = new DateTime(2019, 12, 25),
                         PublicationDate = new DateTime(1960, 08, 12),
                         DueDate = new DateTime(2019, 12, 25).AddDays(14),
-                        ReturnedDate = new DateTime(2020, 01, 02)
+                        ReturnedDate = new DateTime(2020, 01, 02),
+                        ExtensionCount = 0
                     },
                     new Book()
                     {
@@ -118,7 +119,8 @@ namespace Library.Models
                         CheckedOutDate = new DateTime(2019, 12, 25),
                         PublicationDate = new DateTime(1957, 03, 12),
                         DueDate = new DateTime(2019, 12, 25).AddDays(14).AddDays(7),
-                        ReturnedDate = new DateTime(2019, 12, 25).AddDays(14).AddDays(4)
+                        ReturnedDate = new DateTime(2019, 12, 25).AddDays(14).AddDays(4),
+                        ExtensionCount = 0
                     },
                     new Book()
                     {
@@ -128,7 +130,8 @@ namespace Library.Models
                         CheckedOutDate = new DateTime(2019, 12, 25),
                         PublicationDate = new DateTime(1957, 10, 12),
                         DueDate = new DateTime(2019, 12, 25).AddDays(14),
-                        ReturnedDate = null
+                        ReturnedDate = null,
+                        ExtensionCount = 0
                     },
                     new Book()
                     {
@@ -138,7 +141,8 @@ namespace Library.Models
                         CheckedOutDate = new DateTime(2018, 11, 17),
                         PublicationDate = new DateTime(1949, 06, 08),
                         DueDate = new DateTime(2018, 11, 17).AddDays(14),
-                        ReturnedDate = new DateTime(2018, 11, 17).AddDays(2)
+                        ReturnedDate = new DateTime(2018, 11, 17).AddDays(2),
+                        ExtensionCount = 0
                     },
                     new Book()
                     {
@@ -148,7 +152,8 @@ namespace Library.Models
                         CheckedOutDate = new DateTime(2020, 04, 22),
                         PublicationDate = new DateTime(1928, 02, 01),
                         DueDate = new DateTime(2020, 04, 22).AddDays(14),
-                        ReturnedDate = new DateTime(2020, 04, 22).AddDays(12)
+                        ReturnedDate = new DateTime(2020, 04, 22).AddDays(12),
+                        ExtensionCount = 0
                     },
                     new Book()
                     {
@@ -158,7 +163,8 @@ namespace Library.Models
                         CheckedOutDate = new DateTime(2020, 07, 02),
                         PublicationDate = new DateTime(1945, 08, 17),
                         DueDate = new DateTime(2020, 07, 02).AddDays(14),
-                        ReturnedDate = new DateTime(2020, 07, 02).AddDays(9)
+                        ReturnedDate = new DateTime(2020, 07, 02).AddDays(9),
+                        ExtensionCount = 0
                     },
                     new Book()
                     {
@@ -168,9 +174,10 @@ namespace Library.Models
                         CheckedOutDate = new DateTime(2020, 09, 23),
                         PublicationDate = new DateTime(1600, 01, 01),
                         DueDate = new DateTime(2020, 09, 23).AddDays(14),
-                        ReturnedDate = null
+                        ReturnedDate = null,
+                        ExtensionCount = 0
                     }
-                    );
+                    ); ;
             });
 
             OnModelCreatingPartial(modelBuilder);

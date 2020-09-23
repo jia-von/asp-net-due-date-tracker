@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.Models
 {
-    // Book class (Model) modified to serve as a database code-first class:
+    // Modify “Book” (Model):
     [Table("book")]
     public partial class Book
     {
@@ -31,6 +31,11 @@ namespace Library.Models
 
         [Column("ReturnedDate", TypeName = "date")]
         public DateTime? ReturnedDate { get; set; }
+
+        // Add a property “ExtensionCount” - int(10), not nullable.
+        [Required]
+        [Column("ExtensionCount", TypeName = "int(10)")]
+        public int ExtensionCount { get; set; }
 
         [Column("AuthorID", TypeName = "int(10)")]
         public int AuthorID { get; set; }
