@@ -7,28 +7,27 @@ using System.Threading.Tasks;
 
 namespace Library.Models
 {
-    // Add a code-first Author class (Model) (all properties public, not null unless specified otherwise):
-    [Table("Author")]
+    [Table("author")]
     public partial class Author
     {
         public Author()
         {
             Books = new HashSet<Book>();
         }
-        // int “ID” - int(10) (prmary key)
+
         [Key]
+        [Column("ID", TypeName = "int(10)")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("id", TypeName = "int(10)")]
         public int ID { get; set; }
 
-        // string “Name” - varchar(30)
-        [Column("name", TypeName = "varchar(30)")]
+
         [Required]
+        [Column("Name", TypeName = "varchar(30)")]
         public string Name { get; set; }
 
-        // Requisite virtual property and constructor for foreign key.
-        [InverseProperty(nameof(Book.Authors))]
-        public virtual ICollection<Book> Books { get; set; }
 
+        // InverseProperty links the two virtual properties together.
+        [InverseProperty(nameof(Models.Book.Author))]
+        public virtual ICollection<Book> Books { get; set; }
     }
 }

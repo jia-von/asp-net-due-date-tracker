@@ -9,22 +9,22 @@ using Library.Models;
 
 namespace Library.Controllers
 {
-    public class AuthorsController : Controller
+    public class AuthorController : Controller
     {
         private readonly LibraryContext _context;
 
-        public AuthorsController(LibraryContext context)
+        public AuthorController(LibraryContext context)
         {
             _context = context;
         }
 
-        // GET: Authors
+        // GET: Author
         public async Task<IActionResult> Index()
         {
             return View(await _context.Authors.ToListAsync());
         }
 
-        // GET: Authors/Details/5
+        // GET: Author/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,13 +42,13 @@ namespace Library.Controllers
             return View(author);
         }
 
-        // GET: Authors/Create
+        // GET: Author/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Authors/Create
+        // POST: Author/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -64,7 +64,7 @@ namespace Library.Controllers
             return View(author);
         }
 
-        // GET: Authors/Edit/5
+        // GET: Author/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,7 +80,7 @@ namespace Library.Controllers
             return View(author);
         }
 
-        // POST: Authors/Edit/5
+        // POST: Author/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -115,7 +115,7 @@ namespace Library.Controllers
             return View(author);
         }
 
-        // GET: Authors/Delete/5
+        // GET: Author/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,7 +133,7 @@ namespace Library.Controllers
             return View(author);
         }
 
-        // POST: Authors/Delete/5
+        // POST: Author/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

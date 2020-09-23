@@ -10,18 +10,15 @@ namespace Library.Models
     {
         public LibraryContext()
         {
-
         }
 
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
         {
-
         }
 
-        public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<Author> Authors { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
 
-        // Database connection string to a database called “mvc_library”.
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -35,91 +32,150 @@ namespace Library.Models
             modelBuilder.Entity<Author>(entity =>
             {
                 entity.Property(e => e.Name)
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                        .HasCharSet("utf8mb4")
+                        .HasCollation("utf8mb4_general_ci");
 
-                // 5 “Authors” of your choice.
                 entity.HasData(
-                    new Author()
-                    {
-                        ID = -1,
-                        Name = "William Shakespeare"
-                    },
-                    new Author()
-                    {
-                        ID = -2,
-                        Name = "Agatha Christie"
-                    },
-                    new Author()
-                    {
-                        ID = -3,
-                        Name = "Barbara Cartland"
-                    },
-                    new Author()
-                    {
-                        ID = -4,
-                        Name = "Danielle Steel"
-                    },
-                    new Author()
-                    {
-                        ID = -5,
-                        Name = "Harold Robbins"
-                    }
+                new Author()
+                {
+                    ID = -1,
+                    Name = "Dr. Seuss"
+                },
+                new Author()
+                {
+                    ID = -2,
+                    Name = "Terry Pratchet"
+                },
+                new Author()
+                {
+                    ID = -3,
+                    Name = "George Orwell"
+                },
+                new Author()
+                {
+                    ID = -4,
+                    Name = "R.L. Stein"
+                },
+                new Author()
+                {
+                    ID = -5,
+                    Name = "William Shakespeare"
+                },
+                new Author()
+                {
+                    ID = -6,
+                    Name = "H.P. Lovecraft"
+                }
                 );
             });
 
             modelBuilder.Entity<Book>(entity =>
             {
-                entity.HasIndex(e => e.AuthorID)
-                    .HasName("FK_Book_Author");
 
+                // Any "string" types should have collation defined.
+                // Numeric types such as ints and dates do not.
                 entity.Property(e => e.Title)
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
-                OnModelCreatingPartial(modelBuilder);
 
-                entity.HasOne(d => d.Authors)
-                    .WithMany(p => p.Books)
-                    .HasForeignKey(d => d.AuthorID)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_Book_Author");
+                entity.HasIndex(e => e.AuthorID)
+                    .HasName("FK_" + nameof(Book) + "_" + nameof(Author));
 
-                // 3 “Books” by the same Author.   
-                // All three books must have a “CheckoutDate” equal to December 25, 2019.
+                // Always in the one with the foreign key.
+                entity.HasOne(child => child.Author)
+                    .WithMany(parent => parent.Books)
+                    .HasForeignKey(child => child.AuthorID)
+                    // When we delete a record, we can modify the behaviour of the case where there are child records.
+                    // Restrict: Throw an exception if we try to orphan a child record.
+                    // Cascade: Remove any child records that would be orphaned by a removed parent.
+                    // SetNull: Set the foreign key field to null on any orphaned child records.
+                    // NoAction: Don't commit any deletions of parents which would orphan a child.
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_" + nameof(Book) + "_" + nameof(Author));
+
+                /*
+                All three books must have a “CheckoutDate” equal to December 25, 2019.
+                One book must be returned on-time with no extension.
+                One book must be returned on-time with one extension.
+                One book must not have been returned at all!
+                */
                 entity.HasData(
-                    // One book must be returned on-time with no extension.
-                    new Book
+                    new Book()
                     {
                         ID = -1,
-                        Title = "Measure for Measure",
+                        Title = "Green Eggs and Ham",
                         AuthorID = -1,
-                        PublicationDate = new DateTime(1604, 01, 01),
                         CheckedOutDate = new DateTime(2019, 12, 25),
+                        PublicationDate = new DateTime(1960, 08, 12),
+                        DueDate = new DateTime(2019, 12, 25).AddDays(14),
+                        ReturnedDate = new DateTime(2020, 01, 02)
                     },
-
-                    // One book must be returned on-time with one extension.
-                    new Book
+                    new Book()
                     {
                         ID = -2,
-                        Title = "Troilus and Cressida",
+                        Title = "The Cat in the Hat",
                         AuthorID = -1,
-                        PublicationDate = new DateTime(1602, 01, 01),
                         CheckedOutDate = new DateTime(2019, 12, 25),
-                        DueDate = DateTime.Now.AddDays(7)
+                        PublicationDate = new DateTime(1957, 03, 12),
+                        DueDate = new DateTime(2019, 12, 25).AddDays(14).AddDays(7),
+                        ReturnedDate = new DateTime(2019, 12, 25).AddDays(14).AddDays(4)
                     },
-
-                    // One book must not have been returned at all!
-                    new Book
+                    new Book()
                     {
                         ID = -3,
-                        Title = "Hamlet",
+                        Title = "How the Grinch Stole Christmas!",
                         AuthorID = -1,
-                        PublicationDate = new DateTime(1599, 01, 01),
                         CheckedOutDate = new DateTime(2019, 12, 25),
+                        PublicationDate = new DateTime(1957, 10, 12),
+                        DueDate = new DateTime(2019, 12, 25).AddDays(14),
                         ReturnedDate = null
-                    }); 
+                    },
+                    new Book()
+                    {
+                        ID = -4,
+                        Title = "Nineteen Eighty-Four",
+                        AuthorID = -3,
+                        CheckedOutDate = new DateTime(2018, 11, 17),
+                        PublicationDate = new DateTime(1949, 06, 08),
+                        DueDate = new DateTime(2018, 11, 17).AddDays(14),
+                        ReturnedDate = new DateTime(2018, 11, 17).AddDays(2)
+                    },
+                    new Book()
+                    {
+                        ID = -5,
+                        Title = "The Call of Cthulhu",
+                        AuthorID = -6,
+                        CheckedOutDate = new DateTime(2020, 04, 22),
+                        PublicationDate = new DateTime(1928, 02, 01),
+                        DueDate = new DateTime(2020, 04, 22).AddDays(14),
+                        ReturnedDate = new DateTime(2020, 04, 22).AddDays(12)
+                    },
+                    new Book()
+                    {
+                        ID = -6,
+                        Title = "Animal Farm",
+                        AuthorID = -3,
+                        CheckedOutDate = new DateTime(2020, 07, 02),
+                        PublicationDate = new DateTime(1945, 08, 17),
+                        DueDate = new DateTime(2020, 07, 02).AddDays(14),
+                        ReturnedDate = new DateTime(2020, 07, 02).AddDays(9)
+                    },
+                    new Book()
+                    {
+                        ID = -7,
+                        Title = "Hamlet",
+                        AuthorID = -5,
+                        CheckedOutDate = new DateTime(2020, 09, 23),
+                        PublicationDate = new DateTime(1600, 01, 01),
+                        DueDate = new DateTime(2020, 09, 23).AddDays(14),
+                        ReturnedDate = null
+                    }
+                    );
             });
+
+            OnModelCreatingPartial(modelBuilder);
         }
+
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

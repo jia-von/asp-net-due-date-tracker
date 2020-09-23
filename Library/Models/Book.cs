@@ -8,70 +8,40 @@ using System.Threading.Tasks;
 namespace Library.Models
 {
     // Book class (Model) modified to serve as a database code-first class:
-    [Table("Book")]
+    [Table("book")]
     public partial class Book
     {
         [Key]
-        // int “ID” - int(10) (primary key)
+        [Column("ID", TypeName = "int(10)")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("id", TypeName = "int(10)")]
         public int ID { get; set; }
 
-        // string “Title” - varchar(30)
-        [Column("title", TypeName = "varchar(30)")]
         [Required]
+        [Column("Title", TypeName = "varchar(30)")]
         public string Title { get; set; }
 
-        // DateTime “PublicationDate” - date
-        [Column("publication_date", TypeName = "date")]
-        [Required]
+        [Column("PublicationDate", TypeName = "date")]
         public DateTime PublicationDate { get; set; }
-        // DateTime “CheckedOutDate” - date
-        [Column("checked_out_date", TypeName = "date")]
-        [Required]
+
+        [Column("CheckedOutDate", TypeName = "date")]
         public DateTime CheckedOutDate { get; set; }
 
-        // DateTime “DueDate” - date
-        [Column("due_date", TypeName = "date")]
-        [Required]
+        [Column("DueDate", TypeName = "date")]
         public DateTime DueDate { get; set; }
 
-        // DateTime “ReturnedDate” - date (nullable)
-        [Column("returned_date", TypeName = "date")]
+        [Column("ReturnedDate", TypeName = "date")]
         public DateTime? ReturnedDate { get; set; }
 
-        // int “AuthorID” - int(10) (foreign key)
-        [Column("author_id", TypeName = "int(10)")]
+        [Column("AuthorID", TypeName = "int(10)")]
         public int AuthorID { get; set; }
 
-        // Points to the property representing the foreign key column.
+        // This attribute specifies which database field is the foreign key. Typically in the child (many side of the 1-many).
         [ForeignKey(nameof(AuthorID))]
 
-        // By using nameof() it saves us from breaking it accidentally by renaming things, as long as we use Ctrl+R+R to rename them. For some reason the migration from an existing database doesn't use this, which is why things breaks
-        [InverseProperty(nameof(Author.Books))]
-        public virtual Author Authors { get; set; }
-
-        public Book() //string author was removed from parameters
-        {
-            ID = 0;
-            Title = "Default Title";
-            AuthorID = 0;
-            PublicationDate = DateTime.Now;
-            CheckedOutDate = DateTime.Now;
-            DueDate = CheckedOutDate.AddDays(14);
-            ReturnedDate = null;
-        }
-
-        public Book(string title, DateTime publicationDate, DateTime checkedOutDate) //string author was removed from parameters
-        {
-            ID = 0;
-            Title = title;
-            AuthorID = 0;
-            PublicationDate = publicationDate;
-            CheckedOutDate = checkedOutDate;
-            DueDate = CheckedOutDate.AddDays(14);
-            ReturnedDate = null;
-        }
-
+        // InverseProperty links the two virtual properties together.
+        [InverseProperty(nameof(Models.Author.Books))]
+        public virtual Author Author { get; set; }
     }
+
 }
+

@@ -3,7 +3,6 @@
     ViewData["Title"] = "Create";
 }
 
-
 <h1>Create</h1>
 @{
     if (ViewBag.Success != null)
@@ -22,6 +21,17 @@
         <input type="text" id="title" name="title" value="@(ViewBag.BookTitle)" />
     </div>
     <div>
+        @* value="@(ViewBag.Author) *@
+        <label for="authorID">Author</label>
+        <select id="authorID" name="authorID">
+            @foreach (Author author in ViewBag.Authors)
+            {
+                <option value="@(author.ID)">@(author.Name)</option>
+            }
+
+        </select>
+    </div>
+    <div>
         <label for="publicationDate">Publication Date</label>
         <input type="text" id="publicationDate" name="publicationDate" value="@(ViewBag.PublicationDate)" />
     </div>
@@ -29,18 +39,5 @@
         <label for="checkedOutDate">Checked Out Date</label>
         <input type="text" id="checkedOutDate" name="checkedOutDate" value="@(ViewBag.CheckedOutDate)" />
     </div>
-    <div>
-        <select name="author">
-            @using (LibraryContext context = new LibraryContext())
-            {
-
-
-                @foreach (Author author in context.Authors)
-                {
-                    <option value="@(author.Name)">@(author.Name)</option>
-                }
-            }
-        </select>
-        </div>
-        <button type="submit">Go!</button>
-    </form>
+    <button type="submit">Go!</button>
+</form>

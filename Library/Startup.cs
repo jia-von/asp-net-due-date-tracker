@@ -27,7 +27,7 @@ namespace Library
         {
             // Completed scaffold had to link to mvc_library
             services.AddControllersWithViews();
-            services.AddDbContext<LibraryContext>(options => options.UseMySql("server=localhost;port=3306;user=root;database=mvc_library"));
+            services.AddDbContext<LibraryContext>(options => options.UseMySql("server=localhost;port=3306;user=root;database=mvc_library", x => x.ServerVersion("10.4.14-mariadb")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
