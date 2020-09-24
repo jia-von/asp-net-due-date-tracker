@@ -57,7 +57,7 @@ namespace Library.Controllers
         {
             if(filter == "on")
             {
-                ViewBag.OverdueBooks = GetOverdueBooks();
+                ViewBag.Books = GetOverdueBooks();
             }
             else
             {
@@ -95,7 +95,7 @@ namespace Library.Controllers
                             ViewBag.Exception = e;
                         }
                     }
-                    else 
+                    
                     if (returnbook != null)
                     {
                         try
@@ -110,6 +110,7 @@ namespace Library.Controllers
                     }
 
                     Book target = GetBookByID(int.Parse(id));
+
                     if (target == null)
                     {
                         ViewBag.Error = "No book selected.";
@@ -243,7 +244,7 @@ namespace Library.Controllers
                 target = context.Books.Where(x => x.ID == id).Single();
 
                 // A book can only be extended a maximum of 3 times.
-                if (target.ExtensionCount < 4 && DateTime.Compare(DateTime.Now, target.DueDate)<0)
+                if (target.ExtensionCount < 3 && DateTime.Compare(DateTime.Now, target.DueDate)<0)
                 {
                     target.DueDate = DateTime.Now.AddDays(7);
                     target.ExtensionCount += 1;
@@ -291,7 +292,7 @@ namespace Library.Controllers
                 if(DateTime.Compare(DateTime.Now, target.DueDate)<=0)
                 {
                     target.ReturnedDate = DateTime.Now;
-
+                    context.SaveChanges();
                 }else
                 {
                     exception.SubExceptions.Add(new Exception("Cannot return book, kindly speak to a librarian."));
@@ -308,7 +309,12 @@ namespace Library.Controllers
 
             using (LibraryContext context = new LibraryContext())
             {
-                overdueList = context.Books.Where(x => DateTime.Compare(x.DueDate, DateTime.Now) < 0 && x.ReturnedDate == null).ToList();
+                overdueList = context.Books.Where(x => DateTime.Compare(DateTime.Now, x.DueDate) > 0 && x.ReturnedDate == null).ToList();
+
+                foreach(Book book in overdueList)
+                {
+                    book.Author = context.Authors.Where(x => x.ID == book.AuthorID).Single();
+                }
             }
             return overdueList;
         }
