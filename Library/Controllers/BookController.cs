@@ -180,7 +180,7 @@ namespace Library.Controllers
                 CheckedOutDate = DateTime.Now,
 
                 // Keep the logic to set DueDate and ReturnedDate.
-                DueDate = DateTime.Parse(checkedOutDate).AddDays(14),
+                DueDate = DateTime.Now.AddDays(14),
                 ReturnedDate = null,
 
                 // Set “ExtensionCount” to 0.
@@ -250,14 +250,14 @@ namespace Library.Controllers
                     target.ExtensionCount += 1;
                     context.SaveChanges();
                 }else 
-                if(target.ExtensionCount > 3 && DateTime.Compare(DateTime.Now, target.DueDate) < 0)
+                if(target.ExtensionCount > 3)
                 {
                     // If a user tries to extend a book a fourth time do not update the database
                     // Display an error on the page calling the method informing the user they will have to speak to the librarian.
                     exception.SubExceptions.Add(new Exception("Cannot extend book more than four times. Kindly speak to a librarian."));
                     throw exception;
 
-                }else if(DateTime.Compare(DateTime.Now, target.DueDate) >0)
+                }else if(DateTime.Compare(DateTime.Now, target.DueDate) > 0)
                 {
                     // Overdue books cannot be extended.
                     // Display an error on the page calling the method informing the user they will have to speak to the librarian.

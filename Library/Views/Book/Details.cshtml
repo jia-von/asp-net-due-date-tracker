@@ -14,7 +14,6 @@
     }
     else if (ViewBag.Exception != null)
     {
-        <p class="alert-danger">Cannot perform changes to the book because: </p>
         <ul class="alert-danger">
             @foreach (Exception e in ViewBag.Exception.SubExceptions)
             {
