@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Library.Models;
+using Library.Models.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,22 +26,17 @@ namespace Library.Controllers
             {
                 try
                 {
-                    if (title != null && authorID != null && publicationDate != null && checkedOutDate != null)
-                    {
-                        // Get parameters come in as a string, so we have to convert those to the data types required.
-                        Book createdBook = CreateBook(title, int.Parse(authorID), DateTime.Parse(publicationDate), DateTime.Parse(checkedOutDate));
 
-                        ViewBag.Success = $"You have successfully checked out {createdBook.Title} until {createdBook.DueDate}.";
-                    }
-                    else
-                    {
-                        throw new Exception("Not all fields provided for book creation.");
-                    }
+                    // Get parameters come in as a string, so we have to convert those to the data types required.
+                    Book createdBook = CreateBook(title, int.Parse(authorID), publicationDate, checkedOutDate);
+
+                    ViewBag.Success = $"You have successfully checked out {createdBook.Title} until {createdBook.DueDate}.";
+
                 }
-                catch (Exception e)
+                catch (ValidationExceptions e)
                 {
                     // All expected data not provided, so this will be our error state.
-                    ViewBag.Error = $"Unable to check out book: {e.Message}";
+                    ViewBag.Exception = e;
 
                     // Store our data to re-add to the form.
                     ViewBag.ID = id;
@@ -107,41 +103,70 @@ namespace Library.Controllers
                 Ensure this comparison is case insensitive and trimmed.
          
          */
-        public Book CreateBook(string title, int authorID, DateTime publicationDate, DateTime checkedOutDate)
-        {    
-            if(GetBooks().Any(x => x.Title.ToLower() == title.Trim().ToLower()))
+        public Book CreateBook(string title, int authorID, string publicationDate, string checkedOutDate)
+        {
+
+            // Display itemized errors for every field that has an issue.
+            ValidationExceptions exception = new ValidationExceptions();
+
+            // “Title” cannot be empty or whitespace.
+            if(string.IsNullOrWhiteSpace(title))
             {
-                // If “Title” is not unique do not add the new book.
-                // Ensure this comparison is case insensitive and trimmed.
-                return GetBooks().Where(x => x.Title.ToLower() == title.Trim().ToLower()).Single();
+                exception.SubExceptions.Add(new Exception("The title cannot be empty or have whitespace."));
+            }
+            else // “Title” cannot exceed its size in the database.          
+            if (title.Trim().Length > 30)
+            {
+                exception.SubExceptions.Add(new Exception("The title cannot exceed 30 characters."));
             }
             else
-            {
-                Book newBook = new Book()
-                {
-                    Title = title,
-                    AuthorID = authorID,
-                    PublicationDate = publicationDate,
-
-                    // Set “CheckedOutDate” to today’s date.
-                    CheckedOutDate = DateTime.Now,
-
-                    // Keep the logic to set DueDate and ReturnedDate.
-                    DueDate = checkedOutDate.AddDays(14),
-                    ReturnedDate = null,
-
-                    // Set “ExtensionCount” to 0.
-                    ExtensionCount = 0
-                };
-
-                using (LibraryContext context = new LibraryContext())
-                {
-                    context.Books.Add(newBook);
-                    context.SaveChanges();
-                }
-
-                return newBook;
+            if (GetBooks().Any(x => x.Title.ToLower() == title.Trim().ToLower()))
+            {   // Ensure this comparison is case insensitive and trimmed.
+                // If “Title” is not unique do not add the new book.
+                exception.SubExceptions.Add(new Exception("This title is already recorded in the database. Please add new title."));
             }
+
+            // “PublishedDate” cannot be in the future
+            if(publicationDate == null)
+            {
+                exception.SubExceptions.Add(new Exception("Please insert a publication date."));
+            }else 
+            if (DateTime.Compare(DateTime.Parse(publicationDate), DateTime.Now)>0)
+            {
+                exception.SubExceptions.Add(new Exception("Publication date cannot be in the future."));
+            }
+            
+            if(exception.SubExceptions.Count>0)
+            {
+                throw exception;
+            }
+            
+            Book newBook = new Book()
+            {
+                // Trim “Title” before saving it’s value.
+                Title = title.Trim(),
+                AuthorID = authorID,
+                PublicationDate = DateTime.Parse(publicationDate),
+
+                // Set “CheckedOutDate” to today’s date.
+                CheckedOutDate = DateTime.Now,
+
+                // Keep the logic to set DueDate and ReturnedDate.
+                DueDate = DateTime.Parse(checkedOutDate).AddDays(14),
+                ReturnedDate = null,
+
+                // Set “ExtensionCount” to 0.
+                ExtensionCount = 0
+            };
+
+            using (LibraryContext context = new LibraryContext())
+            {
+                context.Books.Add(newBook);
+                context.SaveChanges();
+            }
+
+            return newBook;
+            
         }
         public Book GetBookByID(int id)
         {
@@ -198,5 +223,16 @@ namespace Library.Controllers
                 context.SaveChanges();
             }
         }
+
+        // Add a “GetOverdueBooks()” method.
+        // Return a list of books with “DueDate” in the past, that have no “ReturnedDate”.
+        public List<Book> GetOverdueBooks()
+        {
+            using (LibraryContext context = new LibraryContext())
+            {
+
+            }
+        }
+
     }
 }

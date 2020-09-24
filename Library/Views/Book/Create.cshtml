@@ -9,9 +9,15 @@
     {
         <p class="alert-success">@(ViewBag.Success)</p>
     }
-    else if (ViewBag.Error != null)
+    else if (ViewBag.Exception != null)
     {
-        <p class="alert-danger">@(ViewBag.Error)</p>
+        <p class="alert-danger">Errors detected in your form submission, please correct the following and resubmit:</p>
+        <ul class="alert-danger">
+            @foreach (Exception e in ViewBag.Exception.SubExceptions)
+            {
+                <li>@(e.Message)</li>
+            }
+        </ul>
     }
 }
 
@@ -33,11 +39,8 @@
     </div>
     <div>
         <label for="publicationDate">Publication Date</label>
-        <input type="text" id="publicationDate" name="publicationDate" value="@(ViewBag.PublicationDate)" />
+        <input type="date" id="publicationDate" name="publicationDate" value="@(ViewBag.PublicationDate)" />
     </div>
-    <div>
-        <label for="checkedOutDate">Checked Out Date</label>
-        <input type="text" id="checkedOutDate" name="checkedOutDate" value="@(ViewBag.CheckedOutDate)" />
-    </div>
+    <!--Remove the “Checked Out Date” form input.-->
     <button type="submit">Go!</button>
 </form>
