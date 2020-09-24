@@ -51,13 +51,22 @@ namespace Library.Controllers
 
             return View();
         }
-        public IActionResult List()
+        // Create a form with a checkbox “Filter to Overdue”.
+        // When the page loads with the checkbox checked (GET parameter), call the “GetOverdueBooks()” method instead of the “GetBooks()” method.
+        public IActionResult List(string filter)
         {
-            ViewBag.Books = GetBooks();
+            if(filter == "on")
+            {
+                ViewBag.OverdueBooks = GetOverdueBooks();
+            }
+            else
+            {
+                ViewBag.Books = GetBooks();
+            }
 
             return View();
         }
-        public IActionResult Details(string id, string delete, string extend)
+        public IActionResult Details(string id, string delete, string extend, string returnbook)
         {
             IActionResult result;
 
@@ -67,15 +76,19 @@ namespace Library.Controllers
             {
                 ViewBag.Error = "No book selected.";
                 result = View();
-            }
-            else
+            }else 
+
+            if (delete != null)
             {
-                if (delete != null)
-                {
-                    DeleteBookByID(int.Parse(id));
-                    result = RedirectToAction("List");
-                }
-                else
+                DeleteBookByID(int.Parse(id));
+                result = RedirectToAction("List");
+            }else 
+
+            if (returnbook != null)
+            {
+                ReturnBookByID(int.Parse(id));
+                result = View();
+            } else
                 {
                     if (extend != null)
                     {
@@ -92,7 +105,6 @@ namespace Library.Controllers
                     }
                     result = View();
                 }
-            }
             return result;
         }
 

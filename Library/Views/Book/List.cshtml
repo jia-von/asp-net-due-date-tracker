@@ -5,6 +5,12 @@
 
 <h1>List</h1>
 
+<form action="/Book/List" method="get">
+    <label for="filter">Filter overdue book(s).</label>
+    <input type="checkbox" name="filter" @if (ViewBag.Filter == "on") { @("checked") } />
+    <button type="submit">Filter</button>
+</form>
+
 <table>
     <thead>
         <tr>
