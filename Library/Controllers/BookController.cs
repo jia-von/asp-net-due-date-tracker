@@ -208,10 +208,34 @@ namespace Library.Controllers
 
         public void ExtendDueDateForBookByID(int id)
         {
+            ValidationExceptions exception = new ValidationExceptions();
+            Book target;
+
             using (LibraryContext context = new LibraryContext())
             {
-                context.Books.Where(x => x.ID == id).Single().DueDate = DateTime.Now.Date.AddDays(7);
-                context.SaveChanges();
+                target = context.Books.Where(x => x.ID == id).Single();
+
+                // A book can only be extended a maximum of 3 times.
+                if (target.ExtensionCount < 4)
+                {
+                    target.DueDate = DateTime.Now.AddDays(7);
+                    target.ExtensionCount += 1;
+                    context.SaveChanges();
+                }else 
+                if(target.ExtensionCount> 3)
+                {
+                    // If a user tries to extend a book a fourth time do not update the database
+                    // Display an error on the page calling the method informing the user they will have to speak to the librarian.
+                    exception.SubExceptions.Add(new Exception("Cannot extend book more than four times. Kindly speak to a librarian."));
+                    throw exception;
+
+                }else if(DateTime.Compare(target.DueDate, DateTime.Now)>0)
+                {
+                    // Overdue books cannot be extended.
+                    // Display an error on the page calling the method informing the user they will have to speak to the librarian.
+                    exception.SubExceptions.Add(new Exception("Overdue book cannot be extended. Kindly speak to a librarian."));
+                    throw exception;
+                }
             }
         }
         public void DeleteBookByID(int id)
