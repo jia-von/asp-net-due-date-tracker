@@ -17,7 +17,7 @@ namespace Library.Controllers
         {
             return RedirectToAction("List");
         }
-        public IActionResult Create(string id, string title, string authorID, string publicationDate, string checkedOutDate)
+        public IActionResult Create(string title, string authorID, string publicationDate)
         {
 
             ViewBag.Authors = GetAuthors();
@@ -28,7 +28,7 @@ namespace Library.Controllers
                 {
 
                     // Get parameters come in as a string, so we have to convert those to the data types required.
-                    Book createdBook = CreateBook(title, int.Parse(authorID), publicationDate, checkedOutDate);
+                    Book createdBook = CreateBook(title, int.Parse(authorID), publicationDate);
 
                     ViewBag.Success = $"You have successfully checked out {createdBook.Title} until {createdBook.DueDate}.";
 
@@ -39,11 +39,9 @@ namespace Library.Controllers
                     ViewBag.Exception = e;
 
                     // Store our data to re-add to the form.
-                    ViewBag.ID = id;
                     ViewBag.BookTitle = title;
                     ViewBag.AuthorID = authorID;
                     ViewBag.PublicationDate = publicationDate;
-                    ViewBag.CheckedOutDate = checkedOutDate;
                 }
             }
             // else
@@ -131,7 +129,7 @@ namespace Library.Controllers
                 Ensure this comparison is case insensitive and trimmed.
          
          */
-        public Book CreateBook(string title, int authorID, string publicationDate, string checkedOutDate)
+        public Book CreateBook(string title, int authorID, string publicationDate)
         {
 
             // Display itemized errors for every field that has an issue.
