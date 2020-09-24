@@ -248,7 +248,7 @@ namespace Library.Controllers
                     target.ExtensionCount += 1;
                     context.SaveChanges();
                 }else 
-                if(target.ExtensionCount > 3)
+                if(target.ExtensionCount == 3)
                 {
                     // If a user tries to extend a book a fourth time do not update the database
                     // Display an error on the page calling the method informing the user they will have to speak to the librarian.
