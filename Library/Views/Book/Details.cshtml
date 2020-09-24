@@ -12,6 +12,36 @@
         <h1>Details</h1>
         <p class="alert-danger">No book was selected.</p>
     }
+    else if (ViewBag.Exception != null)
+    {
+        <p class="alert-danger">Cannot perform changes to the book because: </p>
+        <ul class="alert-danger">
+            @foreach (Exception e in ViewBag.Exception.SubExceptions)
+            {
+                <li>@(e.Message)</li>
+            }
+        </ul>
+        <h1>Details - @(ViewBag.Book.ID)</h1>
+        <p>@($"You checked out {ViewBag.Book.Title} on {ViewBag.Book.CheckedOutDate.ToLongDateString()}, and it {dueDateTense} due on {ViewBag.Book.DueDate.ToLongDateString()}.")</p>
+
+        <section>
+            <h2>Book Details</h2>
+            <p>Title: @(ViewBag.Book.Title)</p>
+            <p>Author: @(ViewBag.Book.Author.Name)</p>
+            <p>Publication Date: @(ViewBag.Book.PublicationDate.ToLongDateString())</p>
+        </section>
+        <section>
+            <h2>Library Details</h2>
+            <p>Checked Out Date: @(ViewBag.Book.CheckedOutDate.ToLongDateString())</p>
+            <p>Due Date: @(ViewBag.Book.DueDate.ToLongDateString())</p>
+            <p>Checked Out Date: @(ViewBag.Book.ReturnedDate == null?"Not Returned":((DateTime)ViewBag.Book.ReturnedDate).ToLongDateString())</p>
+            <p>Number of extensions : @(ViewBag.Book.ExtensionCount-1)</p>
+        </section>
+
+        <a class="btn btn-primary" href="/Book/Details?id=@(ViewBag.Book.ID)&extend=true">Extend Deadline of @(ViewBag.Book.ID) - @(ViewBag.Book.Title)</a>
+        <a class="btn btn-danger" href="/Book/Details?id=@(ViewBag.Book.ID)&delete=true">Delete @(ViewBag.Book.ID) - @(ViewBag.Book.Title)</a>
+        <a class="btn btn-secondary" href="/Book/Details?=id@(ViewBag.Book.ID)&returnbook=true">Return Book</a>
+    }
     else
     {
         <h1>Details - @(ViewBag.Book.ID)</h1>
@@ -33,7 +63,7 @@
 
         <a class="btn btn-primary" href="/Book/Details?id=@(ViewBag.Book.ID)&extend=true">Extend Deadline of @(ViewBag.Book.ID) - @(ViewBag.Book.Title)</a>
         <a class="btn btn-danger" href="/Book/Details?id=@(ViewBag.Book.ID)&delete=true">Delete @(ViewBag.Book.ID) - @(ViewBag.Book.Title)</a>
-        <a class="btn btn-secondary" href="Book/Details?=id@(ViewBag.Book.ID)&returnbook=true">Return Book</a>
+        <a class="btn btn-secondary" href="/Book/Details?=id@(ViewBag.Book.ID)&returnbook=true">Return Book</a>
     }
 }
 

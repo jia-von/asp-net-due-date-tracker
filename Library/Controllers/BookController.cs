@@ -70,30 +70,45 @@ namespace Library.Controllers
         {
             IActionResult result;
 
-
             // If ID wasn't provided, or if it won't parse to an int, or the ID doesn't exist.
             if (id == null || !int.TryParse(id, out int temp))
             {
                 ViewBag.Error = "No book selected.";
                 result = View();
-            }else 
-
+            }
+            else 
             if (delete != null)
             {
                 DeleteBookByID(int.Parse(id));
                 result = RedirectToAction("List");
-            }else 
-
-            if (returnbook != null)
-            {
-                ReturnBookByID(int.Parse(id));
-                result = View();
-            } else
+            }else
                 {
                     if (extend != null)
                     {
-                        ExtendDueDateForBookByID(int.Parse(id));
+                        try
+                        {
+                            ExtendDueDateForBookByID(int.Parse(id));
+                        }
+                        catch (ValidationExceptions e)
+                        {
+
+                            ViewBag.Exception = e;
+                        }
                     }
+                    else 
+                    if (returnbook != null)
+                    {
+                        try
+                        {
+                            ReturnBookByID(int.Parse(id));
+                        }
+                        catch (ValidationExceptions e)
+                        {
+                            ViewBag.Exception = e;
+                        }
+
+                    }
+
                     Book target = GetBookByID(int.Parse(id));
                     if (target == null)
                     {
@@ -228,20 +243,20 @@ namespace Library.Controllers
                 target = context.Books.Where(x => x.ID == id).Single();
 
                 // A book can only be extended a maximum of 3 times.
-                if (target.ExtensionCount < 4)
+                if (target.ExtensionCount < 4 && DateTime.Compare(DateTime.Now, target.DueDate)<0)
                 {
                     target.DueDate = DateTime.Now.AddDays(7);
                     target.ExtensionCount += 1;
                     context.SaveChanges();
                 }else 
-                if(target.ExtensionCount> 3)
+                if(target.ExtensionCount > 3 && DateTime.Compare(DateTime.Now, target.DueDate) < 0)
                 {
                     // If a user tries to extend a book a fourth time do not update the database
                     // Display an error on the page calling the method informing the user they will have to speak to the librarian.
                     exception.SubExceptions.Add(new Exception("Cannot extend book more than four times. Kindly speak to a librarian."));
                     throw exception;
 
-                }else if(DateTime.Compare(target.DueDate, DateTime.Now)>0)
+                }else if(DateTime.Compare(DateTime.Now, target.DueDate) >0)
                 {
                     // Overdue books cannot be extended.
                     // Display an error on the page calling the method informing the user they will have to speak to the librarian.
@@ -273,7 +288,7 @@ namespace Library.Controllers
             {
                 target = context.Books.Where(x => x.ID == id).Single();
 
-                if(DateTime.Compare(target.DueDate, DateTime.Now)<=0)
+                if(DateTime.Compare(DateTime.Now, target.DueDate)<=0)
                 {
                     target.ReturnedDate = DateTime.Now;
 
