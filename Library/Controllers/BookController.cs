@@ -138,7 +138,7 @@ namespace Library.Controllers
             // “Title” cannot be empty or whitespace.
             if(string.IsNullOrWhiteSpace(title))
             {
-                exception.SubExceptions.Add(new Exception("The title cannot be empty or have whitespace."));
+                exception.SubExceptions.Add(new Exception("The title cannot be empty."));
             }
             else // “Title” cannot exceed its size in the database.          
             if (title.Trim().Length > 30)
@@ -287,7 +287,7 @@ namespace Library.Controllers
             {
                 target = context.Books.Where(x => x.ID == id).Single();
 
-                if(DateTime.Compare(DateTime.Now, target.DueDate)<=0)
+                if(DateTime.Compare(DateTime.Now, target.DueDate) < 0)
                 {
                     target.ReturnedDate = DateTime.Now;
                     context.SaveChanges();
