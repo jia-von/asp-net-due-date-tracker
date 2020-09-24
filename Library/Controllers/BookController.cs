@@ -205,6 +205,7 @@ namespace Library.Controllers
             }
             return books;
         }
+
         public void ExtendDueDateForBookByID(int id)
         {
             using (LibraryContext context = new LibraryContext())
@@ -224,14 +225,41 @@ namespace Library.Controllers
             }
         }
 
+        // Add a “ReturnBookByID()” method.
+        // Set the returned date of the specified book to today’s date.
+        // Overdue books cannot be returned.
+        // Display an error on the page calling the method informing the user they will have to speak to the librarian.
+        public void ReturnBookByID(int id)
+        {
+            Book target;
+            ValidationExceptions exception = new ValidationExceptions();
+            using (LibraryContext context = new LibraryContext())
+            {
+                target = context.Books.Where(x => x.ID == id).Single();
+
+                if(DateTime.Compare(target.DueDate, DateTime.Now)<=0)
+                {
+                    target.ReturnedDate = DateTime.Now;
+
+                }else
+                {
+                    exception.SubExceptions.Add(new Exception("Cannot return book, kindly speak to a librarian."));
+                    throw exception;
+                }
+            }
+        }
+
         // Add a “GetOverdueBooks()” method.
         // Return a list of books with “DueDate” in the past, that have no “ReturnedDate”.
         public List<Book> GetOverdueBooks()
         {
+            List<Book> overdueList = new List<Book>();
+
             using (LibraryContext context = new LibraryContext())
             {
-
+                overdueList = context.Books.Where(x => DateTime.Compare(x.DueDate, DateTime.Now) < 0 && x.ReturnedDate == null).ToList();
             }
+            return overdueList;
         }
 
     }
