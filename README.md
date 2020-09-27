@@ -4,7 +4,7 @@ The goal of this assignment is meant for me to master ASP.NET Web Application (M
 
 Throughout this exercise, I have successfully executed several concepts related to ASP.NET Web Application MVC:
 - The use of scaffold `Author.cs` model with MVC Controller with Views, using Entity Framework(EF) to create `AuthorController.cs` and **Author Views**. The views scaffolded are `Create.cshtml`, `Delete.cshtml`, `Details.cshtml`, `Edit.cshtml`, and `Index.cshtml`.
-- The creation of model context, `LibraryContext.cs` from scratch. I completed and created relational database between **author** and **book** using EF migrations within **Package Manager Console**
+- The creation of model context, `LibraryContext.cs` from scratch. I completed and created relational database between **author** and **book** using EF migrations within NuGet Package Manager Console.
 - The creation of `BookController.cs` from scratch using empty MVC controller class.
 - The creation of **BookController** and `Views()` from scratch using empty controller files. 
 - The customization of views within `cshtml` type files. 
@@ -60,10 +60,12 @@ The result of successful database migration and update is shown below in [PHPMyA
 | Create View | List View |
 | ------------- | ------------- |
 | ![CreationView](/References/CreateView.PNG) | ![ListView](/References/ListView.PNG) |
+
 | Details View | Author Index View | 
+| ------------- | ------------- |
 | ![DetailsView](/References/DetailsView.PNG) | ![AuthorIndex](/References/AuthorIndex.PNG) |
 
-Note that: `Index()` view through **AuthorController** was created using scaffold, **MVC Controller with Views, using Entity Framework**.
+Note: **AuthorController** `Index()` view was created using scaffold, **MVC Controller with Views, using Entity Framework**.
 
 
 
