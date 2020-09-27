@@ -1,6 +1,6 @@
 # C# ASP.NET Core Practice - Library
 
-The goal of this assignment is meant for me to master ASP.NET Web Application (Model-View-Controller) and to use MVC to create a CRUD application. I have created a tool that kepp track of book checked out and returned to the library. 
+The goal of this assignment is meant for me to master ASP.NET Web Application (Model-View-Controller) and to use MVC to create a CRUD application. I have created a tool that keep track of book(s) checked out and returned to the library. 
 
 ## Installation
 
@@ -32,7 +32,7 @@ The result of successful database migration and update is shown below in [PHPMyA
 
 ![DataBase](/References/DataBase.PNG)
 
-![Author](/References/AuthorTable.PNG)
+![Author](/References/Author Table.PNG)
 
 ![Book](/References/BookTable.PNG)
 
@@ -41,9 +41,9 @@ The result of successful database migration and update is shown below in [PHPMyA
 - Start the Debugging tool within Visual Studio 2019. 
 - A browser will autmatically open to show a view of the database. 
 
-### Screenshots of the views are shown below
+## Screenshots of the views are shown below
 
-![CreationView](/References/CreationView.PNG)
+![CreationView](/References/CreateView.PNG)
 
 Create view through **BookController**.
 
