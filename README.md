@@ -60,15 +60,10 @@ The result of successful database migration and update is shown below in [PHPMyA
 | Create View | List View |
 | ------------- | ------------- |
 | ![CreationView](/References/CreateView.PNG) | ![ListView](/References/ListView.PNG) |
-| Details View | 
-| ------------- | ------------- |
-| ![DetailsView](/References/DetailsView.PNG) |
-| Author Index View | 
-| ![AuthorIndex](/References/AuthorIndex.PNG) |
+| Details View | Author Index View | 
+| ![DetailsView](/References/DetailsView.PNG) | ![AuthorIndex](/References/AuthorIndex.PNG) |
 
-
-
-`Index()` view through **AuthorController** created using scaffold, MVC Controller with Views, using Entity Framework:
+Note that: `Index()` view through **AuthorController** was created using scaffold, **MVC Controller with Views, using Entity Framework**.
 
 
 
