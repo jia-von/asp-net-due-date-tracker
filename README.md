@@ -8,7 +8,7 @@ Throughout this exercise, I have successfully executed several concepts related 
 - The creation of `BookController.cs` from scratch using empty MVC controller class.
 - The creation of **BookController** and `Views()` from scratch using empty controller files. 
 - The customization of views within `cshtml` type files. 
-- The creation of customized **Exceptions** as `ValifationExceptions.cs`to generate custom **Exception** messages. 
+- The creation of customized **Exceptions** as `ValidationExceptions.cs`to generate custom **Exception** messages. 
 - The use of LINQ to conduct queries. 
 
 
@@ -38,19 +38,17 @@ Initiate initial migration to create a database with data seeded.
 PM> dotnet ef migrations add InitialCreation
 PM> dotnet ef update database
 ```
-The result of successful database migration and update is shown below in [PHPMyAdmin](https://www.phpmyadmin.net/) `localhost` with the database name **mvc_library**. 
+
+The result of successful database migration and update is shown below in [PHPMyAdmin](https://www.phpmyadmin.net/) `localhost` with the database name **mvc_library**.
 
 ![DataBase](/References/DataBase.PNG)
 
 
-The **author** table:
+| Author Table | Book Table |
+| ------------- | ------------- |
+| ![Author](/References/AuthorTable.PNG) | ![Book](/References/BookTable.PNG) |
 
-![Author](/References/AuthorTable.PNG)
 
-
-The **book** table:
-
-![Book](/References/BookTable.PNG)
 
 ## Usage/Approach
 
