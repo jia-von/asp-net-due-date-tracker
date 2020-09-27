@@ -32,7 +32,13 @@ The result of successful database migration and update is shown below in [PHPMyA
 
 ![DataBase](/References/DataBase.PNG)
 
-![Author](/References/Author Table.PNG)
+
+The **author** table:
+
+![Author](/References/AuthorTable.PNG)
+
+
+The **book** table:
 
 ![Book](/References/BookTable.PNG)
 
@@ -43,20 +49,24 @@ The result of successful database migration and update is shown below in [PHPMyA
 
 ## Screenshots of the views are shown below
 
+Create view through **BookController**:
+
 ![CreationView](/References/CreateView.PNG)
 
-Create view through **BookController**.
+
+List view through **BookController**:
 
 ![ListView](/References/ListView.PNG)
 
-List view through **BookController**.
+
+Detail view through **BookController**:
 
 ![DetailsView](/References/DetailsView.PNG)
 
-Detail view through **BookController**.
+
+Index view through **AuthorController* created using scaffold, MVC Controller with Views, using Entity Framework:
 
 ![AuthorIndex](/References/AuthorIndex.PNG)
 
-Index view through **AuthorController* created using scaffold, MVC Controller with Views, using Entity Framework.
 
 ## Summary
