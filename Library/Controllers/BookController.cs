@@ -290,6 +290,7 @@ namespace Library.Controllers
                 if(DateTime.Compare(DateTime.Now, target.DueDate) < 0)
                 {
                     target.ReturnedDate = DateTime.Now;
+                    target.DueDate = DateTime.Now;
                     context.SaveChanges();
                 }else
                 {
