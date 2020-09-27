@@ -2,6 +2,16 @@
 
 The goal of this assignment is meant for me to master ASP.NET Web Application (Model-View-Controller) and to use MVC to create a CRUD application. I have created a tool that keep track of book(s) checked out and returned to the library. 
 
+Throughout this exercise, I have successfully executed several concepts related to ASP.NET Web Application MVC:
+- The use of scaffold `Author.cs` model with MVC Controller with Views, using Entity Framework(EF) to create `AuthorController.cs` and **Author Views**. The views scaffolded are `Create.cshtml`, `Delete.cshtml`, `Details.cshtml`, `Edit.cshtml`, and `Index.cshtml`.
+- The creation of model context, `LibraryContext.cs` from scratch. I completed and created relational database between **author** and **book** using EF migrations within **Package Manager Console**
+- The creation of `BookController.cs` from scratch using empty MVC controller class.
+- The creation of **BookController** and `Views()` from scratch using empty controller files. 
+- The customization of views within `cshtml` type files. 
+- The creation of customized **Exceptions** as `ValifationExceptions.cs`to generate custom **Exception** messages. 
+- The use of LINQ to conduct queries. 
+
+
 ## Installation
 
 ```bash
@@ -49,24 +59,24 @@ The **book** table:
 
 ## Screenshots of the views are shown below
 
-Create view through **BookController**:
+`Create()` view through **BookController**:
 
 ![CreationView](/References/CreateView.PNG)
 
 
-List view through **BookController**:
+`List()` view through **BookController**:
 
 ![ListView](/References/ListView.PNG)
 
 
-Detail view through **BookController**:
+`Details()` view through **BookController**:
 
 ![DetailsView](/References/DetailsView.PNG)
 
 
-Index view through **AuthorController* created using scaffold, MVC Controller with Views, using Entity Framework:
+`Index()` view through **AuthorController** created using scaffold, MVC Controller with Views, using Entity Framework:
 
 ![AuthorIndex](/References/AuthorIndex.PNG)
 
 
-## Summary
+
